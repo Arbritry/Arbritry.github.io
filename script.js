@@ -1,13 +1,9 @@
-// --- Supabase 配置 ---
 
-// 您的专属 URL 和 Key 已经填入
 const SUPABASE_URL = 'https://pduxptbeqfuqbmhrwgfb.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkdXhwdGJlcWZ1cWJtaHJ3Z2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Mjc3NTIsImV4cCI6MjA3NDMwMzc1Mn0.cwG8j5fHWP8wMQj2d0pHzyyJ70y0Fh0X1rDu1XrSEXk';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzIıNiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkdXhwdGJlcWZ1cWJtaHJ3Z2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Mjc3NTIsImV4cCI6MjA3NDMwMzc1Mn0.cwG8j5fHWP8wMQj2d0pHzyyJ70y0Fh0X1rDu1XrSEXk';
 
-// 创建 Supabase 客户端
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// --- 获取页面元素 (这部分保持不变) ---
 const groupNumberSelect = document.getElementById('groupNumber');
 const toolsInput = document.getElementById('tools');
 const planInput = document.getElementById('plan');
@@ -26,8 +22,7 @@ let experimentData = [];
 
 // 1. 首次加载数据
 async function fetchData() {
-    // 【已修正】将表名从 '班级' 改为 'banji'
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient // 【已修正】
         .from('banji') 
         .select('*');
 
@@ -40,14 +35,12 @@ async function fetchData() {
 }
 
 // 2. 监听实时变化
-const channel = supabase.channel('any')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'banji' }, payload => { // 【已修正】
+const channel = supabaseClient.channel('any') // 【已修正】
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'banji' }, payload => {
         console.log('收到实时变化!', payload);
-        // 收到变化后，重新获取所有数据来刷新表格
         fetchData();
     })
     .subscribe((status) => {
-        // 更新连接状态的UI
         if (status === 'SUBSCRIBED') {
             connectionStatus.textContent = '已连接';
             connectionStatus.className = 'connection-status connected';
@@ -77,9 +70,8 @@ addDataButton.addEventListener('click', async () => {
 
     const ratio = (circumference / diameter).toFixed(2);
     
-    // 使用 upsert: 如果group存在则更新，不存在则插入
-    const { error } = await supabase
-        .from('banji') // 【已修正】
+    const { error } = await supabaseClient // 【已修正】
+        .from('banji')
         .upsert({ group, tools, plan, circumference, diameter, ratio });
 
     if (error) {
@@ -103,11 +95,10 @@ addConclusionButton.addEventListener('click', async () => {
         return;
     }
     
-    // 使用 update 更新特定小组的结论
-    const { error } = await supabase
-        .from('banji') // 【已修正】
+    const { error } = await supabaseClient // 【已修正】
+        .from('banji')
         .update({ conclusion: conclusion })
-        .eq('group', group); // 条件是 group 列等于你选择的小组
+        .eq('group', group);
 
     if (error) {
         alert('结论提交失败: ' + error.message);
@@ -122,7 +113,6 @@ addConclusionButton.addEventListener('click', async () => {
 function updateTable() {
     dataBody.innerHTML = '';
     
-    // 按小组编号排序
     const sortedData = [...experimentData].sort((a, b) => parseInt(a.group) - parseInt(b.group));
 
     sortedData.forEach(data => {
@@ -144,13 +134,12 @@ function updateTable() {
         dataBody.appendChild(row);
     });
 
-    // 为新生成的删除按钮添加事件监听
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.addEventListener('click', async function() {
             const groupToDelete = this.getAttribute('data-group');
             if (confirm(`确定要删除第 ${groupToDelete} 小组的数据吗？`)) {
-                const { error } = await supabase
-                    .from('banji') // 【已修正】
+                const { error } = await supabaseClient // 【已修正】
+                    .from('banji')
                     .delete()
                     .eq('group', groupToDelete);
                 
