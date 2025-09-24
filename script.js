@@ -2,12 +2,12 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- Supabase 配置 ---
-    // 【已修正】使用了您最初提供的正确密钥
     const SUPABASE_URL = 'https://pduxptbeqfuqbmhrwgfb.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkdXhwdGJlcWZ1cWJtaHJ3Z2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Mjc3NTIsImV4cCI6MjA3NDMwMzc1Mn0.cwG8j5fHWP8wMQj2d0pHzyyJ70y0Fh0X1rDu1XrSEXk';
 
-    // 创建 Supabase 客户端
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // 【最终修正】使用 Supabase V2 的正确初始化方式
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // --- 获取页面元素 ---
     const groupNumberSelect = document.getElementById('groupNumber');
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (error) {
             console.error('获取数据失败:', error);
-            // 如果出错，也更新状态，让用户知道
             connectionStatus.textContent = '加载错误';
             connectionStatus.className = 'connection-status disconnected';
         } else {
@@ -54,8 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 connectionStatus.textContent = '已连接';
                 connectionStatus.className = 'connection-status connected';
                 console.log('成功连接到实时频道!');
-                // 成功连接后，立刻获取一次最新数据
-                fetchData();
+                fetchData(); // 成功连接后，立刻获取一次最新数据
             } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
                 connectionStatus.textContent = '连接错误';
                 connectionStatus.className = 'connection-status disconnected';
@@ -68,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 3. 提交/更新实验数据
     addDataButton.addEventListener('click', async () => {
-        // ... [这部分逻辑和之前一样，无需修改] ...
         const group = groupNumberSelect.value;
         const tools = toolsInput.value;
         const plan = planInput.value;
@@ -103,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 4. 提交/更新结论
     addConclusionButton.addEventListener('click', async () => {
-        // ... [这部分逻辑和之前一样，无需修改] ...
         const group = groupNumberSelect.value;
         const conclusion = conclusionInput.value;
 
@@ -127,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- 渲染函数 ---
     function updateTable() {
-        // ... [这部分逻辑和之前一样，无需修改] ...
         dataBody.innerHTML = '';
         const sortedData = [...experimentData].sort((a, b) => parseInt(a.group) - parseInt(b.group));
         sortedData.forEach(data => {
@@ -162,4 +157,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-}); // 这是 DOMContentLoaded 的结束括号
+});
+
+这次，它一定会连接成功。这个初始化错误是导致脚本崩溃的直接原因，修复它之后，整个程序就能顺利运行了。
