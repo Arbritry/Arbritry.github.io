@@ -3,11 +3,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Supabase 配置 ---
     const SUPABASE_URL = 'https://pduxptbeqfuqbmhrwgfb.supabase.co';
+    // 【最终修正】使用了从您那里复制的、100%正确的原始密钥
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkdXhwdGJlcWZ1cWJtaHJ3Z2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Mjc3NTIsImV4cCI6MjA3NDMwMzc1Mn0.cwG8j5fHWP8wMQj2d0pHzyyJ70y0Fh0X1rDu1XrSEXk';
 
-    // 【最终修正】使用 Supabase V2 的正确初始化方式
+    // 使用 Supabase V2 的正确初始化方式
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 如果 supabaseClient 未能正确创建，则停止执行
+    if (!supabaseClient) {
+        console.error("Supabase 客户端初始化失败！");
+        connectionStatus.textContent = '初始化失败';
+        connectionStatus.className = 'connection-status disconnected';
+        return;
+    }
 
     // --- 获取页面元素 ---
     const groupNumberSelect = document.getElementById('groupNumber');
@@ -43,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 2. 监听实时变化
-    const channel = supabaseClient.channel('any')
+    const channel = supabaseClient.channel('banji-channel')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'banji' }, payload => {
             console.log('收到实时变化!', payload);
             fetchData();
@@ -53,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 connectionStatus.textContent = '已连接';
                 connectionStatus.className = 'connection-status connected';
                 console.log('成功连接到实时频道!');
-                fetchData(); // 成功连接后，立刻获取一次最新数据
+                fetchData(); 
             } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
                 connectionStatus.textContent = '连接错误';
                 connectionStatus.className = 'connection-status disconnected';
@@ -158,5 +167,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 });
-
-这次，它一定会连接成功。这个初始化错误是导致脚本崩溃的直接原因，修复它之后，整个程序就能顺利运行了。
