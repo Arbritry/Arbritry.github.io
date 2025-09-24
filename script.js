@@ -26,8 +26,9 @@ let experimentData = [];
 
 // 1. 首次加载数据
 async function fetchData() {
+    // 【已修正】将表名从 '班级' 改为 'banji'
     const { data, error } = await supabase
-        .from('班级') // 注意：这里的表名必须和你在Supabase创建的完全一致
+        .from('banji') 
         .select('*');
 
     if (error) {
@@ -40,7 +41,7 @@ async function fetchData() {
 
 // 2. 监听实时变化
 const channel = supabase.channel('any')
-    .on('postgres_changes', { event: '*', schema: 'public', table: '班级' }, payload => {
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'banji' }, payload => { // 【已修正】
         console.log('收到实时变化!', payload);
         // 收到变化后，重新获取所有数据来刷新表格
         fetchData();
@@ -78,7 +79,7 @@ addDataButton.addEventListener('click', async () => {
     
     // 使用 upsert: 如果group存在则更新，不存在则插入
     const { error } = await supabase
-        .from('班级')
+        .from('banji') // 【已修正】
         .upsert({ group, tools, plan, circumference, diameter, ratio });
 
     if (error) {
@@ -104,7 +105,7 @@ addConclusionButton.addEventListener('click', async () => {
     
     // 使用 update 更新特定小组的结论
     const { error } = await supabase
-        .from('班级')
+        .from('banji') // 【已修正】
         .update({ conclusion: conclusion })
         .eq('group', group); // 条件是 group 列等于你选择的小组
 
@@ -149,7 +150,7 @@ function updateTable() {
             const groupToDelete = this.getAttribute('data-group');
             if (confirm(`确定要删除第 ${groupToDelete} 小组的数据吗？`)) {
                 const { error } = await supabase
-                    .from('班级')
+                    .from('banji') // 【已修正】
                     .delete()
                     .eq('group', groupToDelete);
                 
