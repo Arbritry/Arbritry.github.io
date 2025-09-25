@@ -3,29 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 标题已修改 -->
     <title>实验记录单 - 六年级数学公开课</title>
     
-    <!-- 链接到外部的 CSS 文件 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div id="connectionStatus" class="connection-status disconnected">连接中...</div>
         
-        <!-- 1. 主标题已修改 -->
         <h1>实验记录单</h1>
         
-        <!-- 2. 欢迎语已被删除 -->
-        
         <div class="input-section">
-            <!-- 整个右侧的 "实验结论与分析" 模块已被删除 -->
-            
-            <!-- 4. 此处标题已修改 -->
             <div class="group-input">
                 <h2>实验方案设计</h2>
                 
-                <!-- 3. 小组编号已从下拉选择改为文本输入框 -->
                 <div class="form-group">
                     <label for="groupNumber">小组编号：</label>
                     <input type="text" id="groupNumber" placeholder="请填写小组编号，例如：第1小组">
@@ -36,22 +27,18 @@
                     <input type="text" id="tools" placeholder="例如：圆形瓶盖、软尺、直尺">
                 </div>
 
-                <!-- 5. 新增了固定的 "实验目的" 显示 -->
                 <div class="form-group purpose-display">
                     <label>实验目的：</label>
                     <p>探究圆的周长是直径的几倍。</p>
                 </div>
 
-                <!-- 6. 标签名已从 "实验方案设计" 改为 "实验步骤" -->
                 <div class="form-group">
                     <label for="plan">实验步骤：</label>
                     <textarea id="plan" placeholder="请详细描述你们的实验步骤"></textarea>
                 </div>
 
-                <!-- 9. 新增 "开始填写数据" 按钮，用于展开下方内容 -->
-                <button id="showDataFields">开始填写数据</button>
+                <button id="showDataFields">完善方案，进行实验，填写数据</button>
 
-                <!-- 8. 数据填写区默认隐藏，由JS控制显示 -->
                 <div id="dataEntrySection" style="display: none;">
                     <div class="form-group">
                         <label for="diameter">圆的直径 (cm)：</label>
@@ -61,7 +48,6 @@
                         <label for="circumference">圆的周长 (cm)：</label>
                         <input type="number" id="circumference" step="0.1" placeholder="请输入测量得到的周长">
                     </div>
-                    <!-- 10. 新增了让学生手动填写的比值输入框 -->
                     <div class="form-group">
                         <label for="ratio">周长 ÷ 直径 = ( )</label>
                         <input type="number" id="ratio" step="0.01" placeholder="请使用计算器计算">
@@ -71,30 +57,29 @@
             </div>
         </div>
         
-        <h2>实验数据汇总表</h2>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>小组编号</th>
-                    <th>实验器材</th>
-                    <th>实验方案</th>
-                    <th>直径 (cm)</th>
-                    <th>周长 (cm)</th>
-                    <th>周长 ÷ 直径</th>
-                    <!-- "本组结论" 列已被删除 -->
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody id="dataBody">
-                <!-- 数据将通过Supabase实时同步 -->
-            </tbody>
-        </table>
+        <!-- 更新：将整个表格区域包裹在一个div中，并默认隐藏 -->
+        <div id="dataTableSection" style="display: none;">
+            <h2>实验数据汇总表</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>小组编号</th>
+                        <th>实验器材</th>
+                        <th>实验方案</th>
+                        <th>直径 (cm)</th>
+                        <th>周长 (cm)</th>
+                        <th>周长 ÷ 直径</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="dataBody">
+                    <!-- 数据将通过Supabase实时同步 -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- 1. 引入 Supabase 的客户端脚本 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- 2. 链接到我们自己的外部 JavaScript 文件 -->
     <script src="script.js"></script>
 </body>
 </html>
