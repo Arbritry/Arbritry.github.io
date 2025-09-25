@@ -104,7 +104,6 @@ button:active {
     font-size: 16px;
     color: #495057;
 }
-/* 更新：为表格的容器添加上边距 */
 #dataTableSection {
     margin-top: 40px;
 }
