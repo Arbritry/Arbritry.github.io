@@ -3,91 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>实验一：圆的周长是直径的几倍 - 六年级数学公开课</title>
-    
-    <!-- 链接到外部的 CSS 文件 -->
-    <link rel="stylesheet" href="style.css">
+    <title>实验数据记录与分析</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <div id="connectionStatus" class="connection-status disconnected">连接中...</div>
-        
-        <h1>实验一：圆的周长是直径的几倍</h1>
-        
-        <div class="intro">
-            <p>欢迎使用圆的周长实验数据收集系统！请各小组按照实验步骤进行操作，并填写实验数据。</p>
-        </div>
-        
-        <div class="input-section">
-            <div class="group-input">
-                <h2>小组实验数据</h2>
-                <div class="form-group">
-                    <label for="groupNumber">小组编号：</label>
-                    <select id="groupNumber">
-                        <option value="">请选择小组</option>
-                        <option value="1">第1小组</option><option value="2">第2小组</option><option value="3">第3小组</option>
-                        <option value="4">第4小组</option><option value="5">第5小组</option><option value="6">第6小组</option>
-                        <option value="7">第7小组</option><option value="8">第8小组</option><option value="9">第9小组</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="tools">实验器材：</label>
-                    <input type="text" id="tools" placeholder="例如：圆形瓶盖、软尺、直尺">
-                </div>
-                <div class="form-group">
-                    <label for="plan">实验方案设计：</label>
-                    <textarea id="plan" placeholder="请详细描述你们的实验步骤"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="diameter">圆的直径 (cm)：</label>
-                    <input type="number" id="diameter" step="0.1" placeholder="请输入测量得到的直径">
-                </div>
-                <div class="form-group">
-                    <label for="circumference">圆的周长 (cm)：</label>
-                    <input type="number" id="circumference" step="0.1" placeholder="请输入测量得到的周长">
-                </div>
-                <button id="addData">提交/更新本组数据</button>
-            </div>
+    <div class="container mt-5">
+        <h1>用几何方法测量π的数值</h1>
+        <hr>
 
-            <div class="conclusion">
-                <h2>实验结论与分析</h2>
-                <div class="data-analysis">
-                    <h3>数据分析</h3>
-                    <p>请观察上方汇总表，思考各组数据为什么会存在差异？可能的原因是什么？</p>
+        <h2>1. 实验方案设计</h2>
+        <p><strong>实验目的:</strong> 通过测量圆的周长和直径，计算圆周率π的近似值，并进行数据分析。</p>
+        <p><strong>实验器材:</strong> 圆形物体（例如：杯盖、硬币）、软尺、直尺、纸、笔。</p>
+        <p><strong>实验步骤:</strong></p>
+        <ol>
+            <li>选择一个圆形物体。</li>
+            <li>使用直尺多次测量圆形物体的直径，记录数据并计算平均值。</li>
+            <li>使用软尺多次测量圆形物体的周长，记录数据并计算平均值。</li>
+            <li>利用公式 π = 周长 / 直径 计算π的近似值。</li>
+            <li>更换不同大小的圆形物体，重复以上步骤，进行多组测量。</li>
+            <li>对多组π值进行统计分析，计算平均值和不确定度，并与公认值进行比较。</li>
+        </ol>
+        <hr>
+
+        <h2>2. 数据记录与处理</h2>
+        <!-- 这是新增的控制按钮 -->
+        <button id="toggle-visibility-btn" class="btn btn-secondary mb-3">显示/隐藏数据输入区域</button>
+
+        <!-- 这是新增的、包裹了表单的容器，默认是隐藏的 -->
+        <div id="data-input-section" style="display: none;">
+            <form id="data-form">
+                <div class="form-group">
+                    <label for="diameter">圆的直径 (cm):</label>
+                    <input type="text" class="form-control" id="diameter" placeholder="请输入测量得到的直径">
                 </div>
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="conclusionText">本组结论：</label>
-                    <textarea id="conclusionText" placeholder="请根据实验数据和分析，写出本组的实验结论"></textarea>
-                    <div class="suggestions">提示：请先选择小组，再填写结论。</div>
+                <div class="form-group">
+                    <label for="circumference">圆的周长 (cm):</label>
+                    <input type="text" class="form-control" id="circumference" placeholder="请输入测量得到的周长">
                 </div>
-                <button id="addConclusion">提交/更新本组结论</button>
+                <button type="button" class="btn btn-primary" id="submitData">提交/更新本组数据</button>
+            </form>
+        </div>
+        <hr>
+        
+        <h2>3. 数据分析结果</h2>
+        <div class="analysis-results mt-4">
+            <p><strong>当前计算的π值:</strong> <span id="current-pi">--</span></p>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>组号</th>
+                        <th>直径 (cm)</th>
+                        <th>周长 (cm)</th>
+                        <th>计算的π值</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="results-table">
+                    <!-- 数据行将通过JavaScript动态插入 -->
+                </tbody>
+            </table>
+            <div class="summary mt-4">
+                <h4>数据汇总</h4>
+                <p><strong>π的平均值:</strong> <span id="average-pi">--</span></p>
+                <p><strong>标准差 (不确定度):</strong> <span id="std-deviation">--</span></p>
+                <p><strong>与公认值 (3.14159) 的相对误差:</strong> <span id="relative-error">--</span></p>
+                <button class="btn btn-danger" id="clear-all-data">清空所有数据</button>
             </div>
         </div>
-        
-        <h2>实验数据汇总表</h2>
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>小组编号</th>
-                    <th>实验器材</th>
-                    <th>实验方案</th>
-                    <th>直径 (cm)</th>
-                    <th>周长 (cm)</th>
-                    <th>周长 ÷ 直径 (π)</th>
-                    <th>本组结论</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody id="dataBody">
-                <!-- 数据将通过Supabase实时同步 -->
-            </tbody>
-        </table>
+        <hr>
     </div>
 
-    <!-- 1. 引入 Supabase 的客户端脚本 -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- 2. 链接到我们自己的外部 JavaScript 文件 -->
-    <script src="script.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
