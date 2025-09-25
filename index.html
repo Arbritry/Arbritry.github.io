@@ -13,28 +13,34 @@
         <div class="intro">
             <p>欢迎使用圆的周长实验数据收集系统！请各小组按照实验步骤进行操作，并填写实验数据。</p>
         </div>
-        <div class="input-section">
-            <div class="group-input">
-                <h2>小组实验数据</h2>
-                <div class="form-group">
-                    <label for="groupNumber">小组编号：</label>
-                    <select id="groupNumber">
-                        <option value="">请选择小组</option>
-                        <option value="1">第1小组</option><option value="2">第2小组</option><option value="3">第3小组</option>
-                        <option value="4">第4小组</option><option value="5">第5小组</option><option value="6">第6小组</option>
-                        <option value="7">第7小组</option><option value="8">第8小组</option><option value="9">第9小组</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="tools">实验器材：</label>
-                    <input type="text" id="tools" placeholder="例如：圆形瓶盖、软尺、直尺">
-                </div>
-                <div class="form-group">
-                    <label for="plan">实验方案设计：</label>
-                    <textarea id="plan" placeholder="请详细描述你们的实验步骤"></textarea>
-                </div>
-                <button type="button" id="toggle-measurements-btn" class="toggle-button">点击输入/隐藏测量数据</button>
-                <div id="measurement-fields" class="collapsible-content">
+
+        <!-- 【新增】主控制按钮 -->
+        <div class="main-toggle-container">
+            <button id="toggle-form-btn" class="main-toggle-btn">数据填写</button>
+        </div>
+
+        <!-- 【新增】包裹整个表单区域的容器 -->
+        <div id="form-container" class="collapsible-container">
+            <div class="input-section">
+                <div class="group-input">
+                    <h2>小组实验数据</h2>
+                    <div class="form-group">
+                        <label for="groupNumber">小组编号：</label>
+                        <select id="groupNumber">
+                            <option value="">请选择小组</option>
+                            <option value="1">第1小组</option><option value="2">第2小组</option><option value="3">第3小组</option>
+                            <option value="4">第4小组</option><option value="5">第5小组</option><option value="6">第6小组</option>
+                            <option value="7">第7小组</option><option value="8">第8小组</option><option value="9">第9小组</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tools">实验器材：</label>
+                        <input type="text" id="tools" placeholder="例如：圆形瓶盖、软尺、直尺">
+                    </div>
+                    <div class="form-group">
+                        <label for="plan">实验方案设计：</label>
+                        <textarea id="plan" placeholder="请详细描述你们的实验步骤"></textarea>
+                    </div>
                     <div class="form-group">
                         <label for="diameter">圆的直径 (cm)：</label>
                         <input type="number" id="diameter" step="0.1" placeholder="请输入测量得到的直径">
@@ -43,23 +49,24 @@
                         <label for="circumference">圆的周长 (cm)：</label>
                         <input type="number" id="circumference" step="0.1" placeholder="请输入测量得到的周长">
                     </div>
+                    <button id="addData">提交/更新本组数据</button>
                 </div>
-                <button id="addData">提交/更新本组数据</button>
-            </div>
-            <div class="conclusion">
-                <h2>实验结论与分析</h2>
-                <div class="data-analysis">
-                    <h3>数据分析</h3>
-                    <p>请观察上方汇总表，思考各组数据为什么会存在差异？可能的原因是什么？</p>
+                <div class="conclusion">
+                    <h2>实验结论与分析</h2>
+                    <div class="data-analysis">
+                        <h3>数据分析</h3>
+                        <p>请观察上方汇总表，思考各组数据为什么会存在差异？可能的原因是什么？</p>
+                    </div>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="conclusionText">本组结论：</label>
+                        <textarea id="conclusionText" placeholder="请根据实验数据和分析，写出本组的实验结论"></textarea>
+                        <div class="suggestions">提示：请先选择小组，再填写结论。</div>
+                    </div>
+                    <button id="addConclusion">提交/更新本组结论</button>
                 </div>
-                <div class="form-group" style="margin-top: 20px;">
-                    <label for="conclusionText">本组结论：</label>
-                    <textarea id="conclusionText" placeholder="请根据实验数据和分析，写出本组的实验结论"></textarea>
-                    <div class="suggestions">提示：请先选择小组，再填写结论。</div>
-                </div>
-                <button id="addConclusion">提交/更新本组结论</button>
             </div>
         </div>
+        
         <h2>实验数据汇总表</h2>
         <table class="data-table">
             <thead>
