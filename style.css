@@ -25,14 +25,12 @@ h1 {
     padding-bottom: 15px;
     font-weight: 600;
 }
-/* intro class is no longer needed */
 .input-section {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 30px;
 }
-/* "conclusion" class is no longer needed, group-input will take full width */
 .group-input {
     flex: 1;
     min-width: 300px;
@@ -83,7 +81,7 @@ button {
     font-size: 16px;
     font-weight: 600;
     transition: background-color 0.3s, transform 0.1s;
-    width: 100%; /* 让按钮宽度统一 */
+    width: 100%;
     margin-top: 5px;
 }
 button:hover {
@@ -92,14 +90,12 @@ button:hover {
 button:active {
     transform: scale(0.98);
 }
-/* 新增样式：为 "开始填写数据" 按钮设置一个不同的颜色 */
 #showDataFields {
-    background-color: #2ecc71; /* 绿色 */
+    background-color: #2ecc71;
 }
 #showDataFields:hover {
     background-color: #27ae60;
 }
-/* 新增样式：为 "实验目的" 区域添加背景和边框 */
 .purpose-display p {
     margin: 0;
     padding: 10px 12px;
@@ -107,6 +103,10 @@ button:active {
     border-radius: 6px;
     font-size: 16px;
     color: #495057;
+}
+/* 更新：为表格的容器添加上边距 */
+#dataTableSection {
+    margin-top: 40px;
 }
 .data-table {
     width: 100%;
@@ -134,7 +134,7 @@ button:active {
     background-color: #e74c3c;
     padding: 5px 10px;
     font-size: 14px;
-    width: auto; /* 删除按钮不需要占满宽度 */
+    width: auto;
 }
 .delete-btn:hover {
     background-color: #c0392b;
