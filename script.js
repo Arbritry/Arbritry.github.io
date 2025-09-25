@@ -1,14 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 【已修改】折叠面板交互功能
-    const toggleBtn = document.getElementById('toggle-measurements-btn');
-    const measurementFields = document.getElementById('measurement-fields');
-    if (toggleBtn && measurementFields) {
+    // 【最终版】折叠交互功能
+    const toggleBtn = document.getElementById('toggle-form-btn');
+    const formContainer = document.getElementById('form-container');
+
+    if (toggleBtn && formContainer) {
         toggleBtn.addEventListener('click', function() {
-            measurementFields.classList.toggle('active');
+            // 切换 active 类的有无，来控制显示/隐藏
+            formContainer.classList.toggle('active');
         });
     }
 
-    // --- Supabase 配置 ---
+    // --- Supabase 配置 (无需改动) ---
     const SUPABASE_URL = 'https://pduxptbeqfuqbmhrwgfb.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkdXhwdGJlcWZ1cWJtaHJ3Z2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Mjc3NTIsImV4cCI6MjA3NDMwMzc1Mn0.cwG8j5fHWP8wMQj2d0pHzyyJ70y0Fh0X1rDu1XrSEXk';
     const { createClient } = supabase;
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!supabaseClient) { console.error("Supabase 客户端初始化失败！"); connectionStatus.textContent = '初始化失败'; connectionStatus.className = 'connection-status disconnected'; return; }
 
-    // --- 获取页面元素 ---
+    // --- 获取页面元素 (无需改动) ---
     const groupNumberSelect = document.getElementById('groupNumber');
     const toolsInput = document.getElementById('tools');
     const planInput = document.getElementById('plan');
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const connectionStatus = document.getElementById('connectionStatus');
     let experimentData = [];
 
+    // --- 核心应用逻辑 (无需改动) ---
     async function fetchData() {
         const { data, error } = await supabaseClient.from('banji').select('*');
         if (error) { console.error('获取数据失败:', error); connectionStatus.textContent = '加载错误'; connectionStatus.className = 'connection-status disconnected'; } else { experimentData = data; updateTable(); }
@@ -66,16 +69,4 @@ document.addEventListener('DOMContentLoaded', function() {
             const shortPlan = data.plan && data.plan.length > 20 ? data.plan.substring(0, 20) + '...' : (data.plan || '');
             const shortConclusion = data.conclusion && data.conclusion.length > 20 ? data.conclusion.substring(0, 20) + '...' : (data.conclusion || '');
             row.innerHTML = `<td>第${data.group}小组</td><td>${data.tools}</td><td title="${data.plan || ''}">${shortPlan}</td><td>${data.diameter}</td><td>${data.circumference}</td><td><b>${data.ratio}</b></td><td title="${data.conclusion || ''}">${shortConclusion}</td><td><button class="delete-btn" data-group="${data.group}">删除</button></td>`;
-            dataBody.appendChild(row);
-        });
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', async function() {
-                const groupToDelete = this.getAttribute('data-group');
-                if (confirm(`确定要删除第 ${groupToDelete} 小组的数据吗？`)) {
-                    const { error } = await supabaseClient.from('banji').delete().eq('group', groupToDelete);
-                    if (error) { alert('删除失败: ' + error.message); }
-                }
-            });
-        });
-    }
-});
+   
