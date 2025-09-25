@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 修正：点击按钮，同时显示数据填写区和汇总表，然后隐藏按钮
     showDataFieldsButton.addEventListener('click', () => {
         dataEntrySection.style.display = 'block';
-        dataTableSection.style.display = 'block'; // 同时显示表格
+        dataTableSection.style.display = 'block'; // <<<--- 正确的代码在这里，它会把汇总表显示出来
         showDataFieldsButton.style.display = 'none';
     });
 
@@ -148,4 +148,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});```
+});
