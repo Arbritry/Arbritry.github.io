@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // --- 获取页面元素 (已更新) ---
+    // --- 获取页面元素 ---
     const groupNumberInput = document.getElementById('groupNumber');
     const toolsInput = document.getElementById('tools');
     const planInput = document.getElementById('plan');
     const showDataFieldsButton = document.getElementById('showDataFields');
     const dataEntrySection = document.getElementById('dataEntrySection');
-    const dataTableSection = document.getElementById('dataTableSection'); // 更新：获取表格区域
+    const dataTableSection = document.getElementById('dataTableSection'); // 获取表格区域
     const diameterInput = document.getElementById('diameter');
     const circumferenceInput = document.getElementById('circumference');
     const ratioInput = document.getElementById('ratio');
@@ -69,10 +69,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     
-    // (已更新) 点击按钮同时显示数据填写区和汇总表
+    // 修正：点击按钮，同时显示数据填写区和汇总表，然后隐藏按钮
     showDataFieldsButton.addEventListener('click', () => {
         dataEntrySection.style.display = 'block';
-        dataTableSection.style.display = 'block'; // 更新：同时显示表格区域
+        dataTableSection.style.display = 'block'; // 同时显示表格
         showDataFieldsButton.style.display = 'none';
     });
 
@@ -148,4 +148,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-});
+});```
