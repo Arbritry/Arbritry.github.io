@@ -29,8 +29,25 @@ button:active { transform: scale(0.98); }
 .connected { background-color: #2ecc71; color: white; }
 .disconnected { background-color: #e74c3c; color: white; }
 
-/* --- 【已修改】折叠面板样式 --- */
-.toggle-button { background-color: #7f8c8d; margin-bottom: 20px; width: 100%; }
-.toggle-button:hover { background-color: #95a5a6; }
-.collapsible-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-.collapsible-content.active { max-height: 500px; transition: max-height 0.4s ease-in; }
+/* --- 【最终版】折叠功能样式 --- */
+.main-toggle-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.main-toggle-btn {
+    background-color: #27ae60; /* 使用一个醒目的绿色 */
+    padding: 15px 30px;
+    font-size: 18px;
+}
+.main-toggle-btn:hover {
+    background-color: #2ecc71;
+}
+
+.collapsible-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.7s cubic-bezier(0.25, 0.1, 0.25, 1); /* 使用更平滑的过渡效果 */
+}
+.collapsible-container.active {
+    max-height: 1200px; /* 一个足够大的值，确保能完全展开 */
+}
