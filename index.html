@@ -4,20 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>实验一：圆的周长是直径的几倍 - 六年级数学公开课</title>
-    
-    <!-- 链接到外部的 CSS 文件 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div id="connectionStatus" class="connection-status disconnected">连接中...</div>
-        
         <h1>实验一：圆的周长是直径的几倍</h1>
-        
         <div class="intro">
             <p>欢迎使用圆的周长实验数据收集系统！请各小组按照实验步骤进行操作，并填写实验数据。</p>
         </div>
-        
         <div class="input-section">
             <div class="group-input">
                 <h2>小组实验数据</h2>
@@ -38,17 +33,19 @@
                     <label for="plan">实验方案设计：</label>
                     <textarea id="plan" placeholder="请详细描述你们的实验步骤"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="diameter">圆的直径 (cm)：</label>
-                    <input type="number" id="diameter" step="0.1" placeholder="请输入测量得到的直径">
-                </div>
-                <div class="form-group">
-                    <label for="circumference">圆的周长 (cm)：</label>
-                    <input type="number" id="circumference" step="0.1" placeholder="请输入测量得到的周长">
+                <button type="button" id="toggle-measurements-btn" class="toggle-button">点击输入/隐藏测量数据</button>
+                <div id="measurement-fields" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="diameter">圆的直径 (cm)：</label>
+                        <input type="number" id="diameter" step="0.1" placeholder="请输入测量得到的直径">
+                    </div>
+                    <div class="form-group">
+                        <label for="circumference">圆的周长 (cm)：</label>
+                        <input type="number" id="circumference" step="0.1" placeholder="请输入测量得到的周长">
+                    </div>
                 </div>
                 <button id="addData">提交/更新本组数据</button>
             </div>
-
             <div class="conclusion">
                 <h2>实验结论与分析</h2>
                 <div class="data-analysis">
@@ -63,31 +60,17 @@
                 <button id="addConclusion">提交/更新本组结论</button>
             </div>
         </div>
-        
         <h2>实验数据汇总表</h2>
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>小组编号</th>
-                    <th>实验器材</th>
-                    <th>实验方案</th>
-                    <th>直径 (cm)</th>
-                    <th>周长 (cm)</th>
-                    <th>周长 ÷ 直径 (π)</th>
-                    <th>本组结论</th>
-                    <th>操作</th>
+                    <th>小组编号</th><th>实验器材</th><th>实验方案</th><th>直径 (cm)</th><th>周长 (cm)</th><th>周长 ÷ 直径 (π)</th><th>本组结论</th><th>操作</th>
                 </tr>
             </thead>
-            <tbody id="dataBody">
-                <!-- 数据将通过Supabase实时同步 -->
-            </tbody>
+            <tbody id="dataBody"></tbody>
         </table>
     </div>
-
-    <!-- 1. 引入 Supabase 的客户端脚本 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- 2. 链接到我们自己的外部 JavaScript 文件 -->
     <script src="script.js"></script>
 </body>
 </html>
