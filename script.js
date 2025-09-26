@@ -1,7 +1,7 @@
 // 确保整个页面加载完毕后再执行我们的代码
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- Supabase 配置 ---
+    // --- Supabase 配置 (无变化) ---
     const SUPABASE_URL = 'https://pduxptbeqfuqbmhrwgfb.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkdXhwdGJlcWZ1cWJtaHJ3Z2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg3Mjc3NTIsImV4cCI6MjA3NDMwMzc1Mn0.cwG8j5fHWP8wMQj2d0pHzyyJ70y0Fh0X1rDu1XrSEXk';
 
@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // --- 获取页面元素 ---
+    // --- 获取页面元素 (无变化) ---
     const groupNumberInput = document.getElementById('groupNumber');
     const toolsInput = document.getElementById('tools');
     const planInput = document.getElementById('plan');
     const showDataFieldsButton = document.getElementById('showDataFields');
     const dataEntrySection = document.getElementById('dataEntrySection');
-    const dataTableSection = document.getElementById('dataTableSection'); // 获取表格区域
+    const dataTableSection = document.getElementById('dataTableSection');
     const diameterInput = document.getElementById('diameter');
     const circumferenceInput = document.getElementById('circumference');
     const ratioInput = document.getElementById('ratio');
@@ -43,36 +43,25 @@ document.addEventListener('DOMContentLoaded', function() {
             connectionStatus.textContent = '加载错误';
             connectionStatus.className = 'connection-status disconnected';
         } else {
+            // 只有在成功获取数据后，才显示“已连接”
+            connectionStatus.textContent = '已连接';
+            connectionStatus.className = 'connection-status connected';
             experimentData = data;
             updateTable();
         }
     }
 
-    const channel = supabaseClient.channel('banji-channel')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'banji' }, payload => {
-            console.log('收到实时变化!', payload);
-            fetchData();
-        })
-        .subscribe((status, err) => {
-            if (status === 'SUBSCRIBED') {
-                connectionStatus.textContent = '已连接';
-                connectionStatus.className = 'connection-status connected';
-                console.log('成功连接到实时频道!');
-                fetchData(); 
-            } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-                connectionStatus.textContent = '连接错误';
-                connectionStatus.className = 'connection-status disconnected';
-                console.error('连接实时频道失败: ', err);
-            } else {
-                connectionStatus.textContent = '连接中...';
-                connectionStatus.className = 'connection-status disconnected';
-            }
-        });
-    
-    // 修正：点击按钮，同时显示数据填写区和汇总表，然后隐藏按钮
+    // -----【核心修改】-----
+    // 1. 移除了之前所有的 channel 和 .subscribe() 代码
+    // 2. 页面加载后，先立即获取一次数据
+    fetchData(); 
+    // 3. 然后，设置一个定时器，每 5000 毫秒（5秒）就自动调用一次 fetchData 函数
+    setInterval(fetchData, 5000);
+    // ----------------------
+
     showDataFieldsButton.addEventListener('click', () => {
         dataEntrySection.style.display = 'block';
-        dataTableSection.style.display = 'block'; // <<<--- 正确的代码在这里，它会把汇总表显示出来
+        dataTableSection.style.display = 'block';
         showDataFieldsButton.style.display = 'none';
     });
 
@@ -105,7 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
             diameterInput.value = '';
             circumferenceInput.value = '';
             ratioInput.value = '';
-            alert('数据提交成功！已实时同步到所有小组。');
+            alert('数据提交成功！');
+            // 提交成功后，立即手动调用一次 fetchData，让当前用户马上看到更新，而不是等5秒
+            fetchData();
         }
     });
 
@@ -143,6 +134,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         .eq('group', groupToDelete);
                     if (error) {
                         alert('删除失败: ' + error.message);
+                    } else {
+                        // 删除成功后也立即刷新数据
+                        fetchData();
                     }
                 }
             });
